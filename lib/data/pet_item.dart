@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'pet_item.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class PetItem {
   String imageLink;
   int goodWithChildren;

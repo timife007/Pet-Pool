@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_pool/ui/home_screen.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -21,23 +22,15 @@ class StartScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                      padding: const EdgeInsets.all(16.0),
-                      child: const Text(
-                        'Happiness is closer than you think', // Replace with your desired text
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
-                  Container(
                     width: double.infinity,
                     margin: const EdgeInsets.all(16.0),
-                    height: 50,
+                    height: 45,
                     child: ElevatedButton(
                       onPressed: () {
-                        
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeScreen()));
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor:
