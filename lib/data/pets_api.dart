@@ -12,7 +12,7 @@ List<PetItem> parsePets(String responseBody) {
 }
 
 // ignore: body_might_complete_normally_nullable
-Future<List<PetItem>?> fetchPets(http.Client client, String name) async {
+Future<List<PetItem>> fetchPets(http.Client client, String name) async {
   try {
     final response = await client.get(
         Uri.parse('https://api.api-ninjas.com/v1/dogs?name=$name'),
@@ -20,6 +20,6 @@ Future<List<PetItem>?> fetchPets(http.Client client, String name) async {
     // logger.d(response.body);
     return compute(parsePets, response.body);
   } catch (e) {
-    return null;
+    return [];
   }
 }

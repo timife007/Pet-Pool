@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:pet_pool/data/pet_item.dart';
 import 'package:pet_pool/data/pets_api.dart';
@@ -13,11 +11,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  late Future<List<PetItem>> futureData;
+
+  @override
+  void initState() {
+    super.initState();
+    futureData = fetchPets(http.Client(), '');
+  }
+
+  void _performSearch() {
+    setState(() {
+      futureData = fetchPets(http.Client(), _searchController.text);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: const Text(
           'Pet Pool',
@@ -29,11 +42,12 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Search for pets')),
-                textAlign: TextAlign.start,
-                onChanged: (value) => {}),
+              controller: _searchController,
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(), label: Text('Search for pets')),
+              textAlign: TextAlign.start,
+              onChanged: (value) => _performSearch(),
+            ),
           ),
           Expanded(child: buildFutureBuilder())
         ],
@@ -45,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // Future<List<PetItem> future = fetchPets(http.Client(), '');
 
     return FutureBuilder(
-        future: fetchPets(http.Client(), 'Australian'),
+        future: futureData,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return const Center(
