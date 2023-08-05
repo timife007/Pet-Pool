@@ -1,30 +1,69 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:pet_pool/data/pet_item.dart';
 import 'package:pet_pool/data/pets_api.dart';
 import 'package:http/http.dart' as http;
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-          future: fetchPets(http.Client(), 'Australian'),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: const Text(
+          'Pet Pool',
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    label: Text('Search for pets')),
+                textAlign: TextAlign.start,
+                onChanged: (value) => {}),
+          ),
+          Expanded(child: buildFutureBuilder())
+        ],
+      ),
+    );
+  }
+
+  FutureBuilder<List<PetItem>?> buildFutureBuilder() {
+    // Future<List<PetItem> future = fetchPets(http.Client(), '');
+
+    return FutureBuilder(
+        future: fetchPets(http.Client(), 'Australian'),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('An error has occurred!'),
+            );
+          } else if (snapshot.hasData) {
+            if (snapshot.data!.isEmpty) {
               return const Center(
-                child: Text('An error has occurred!'),
-              );
-            } else if (snapshot.hasData) {
-              return PetList(pets: snapshot.data!);
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
+                child: Text('No data available'),
               );
             }
-          }),
-    );
+            return PetList(pets: snapshot.data!);
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 }
 
