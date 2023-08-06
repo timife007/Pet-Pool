@@ -3,6 +3,7 @@ import 'package:pet_pool/data/pet_item.dart';
 import 'package:pet_pool/data/pets_api.dart';
 import 'package:http/http.dart' as http;
 import 'package:pet_pool/logger.dart';
+import 'package:pet_pool/ui/detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -47,7 +48,15 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(10.0),
             child: TextField(
               decoration: const InputDecoration(
-                  border: OutlineInputBorder(), label: Text('Search for pets')),
+                  labelStyle:
+                      TextStyle(color: Colors.black), // Color of the label text
+
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Colors.green), // Border color when focused
+                  ),
+                  border: OutlineInputBorder(),
+                  label: Text('Search for pets')),
               textAlign: TextAlign.start,
               onChanged: (value) => {
                 // setState(() {
@@ -69,8 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   FutureBuilder<List<PetItem>?> buildFutureBuilder() {
-    // Future<List<PetItem> future = fetchPets(http.Client(), '');
-
     return FutureBuilder(
         future: futureData,
         builder: (context, snapshot) {
@@ -101,28 +108,47 @@ class PetList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      itemCount: pets.length,
-      itemBuilder: (context, index) {
-        return Card(
-            elevation: 4, // Controls the shadow intensity
-            shape: RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.circular(16.0), // Adjust the corner radius here
-            ),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.network(pets[index].imageLink),
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+        itemCount: pets.length,
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          DetailScreen(petItem: pets[index])));
+            },
+            child: Card(
+                elevation: 4, // Controls the shadow intensity
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      16.0), // Adjust the corner radius here
                 ),
-                Text(pets[index].name)
-              ],
-            ));
-      },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.network(pets[index].imageLink),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        pets[index].name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
+                )),
+          );
+        },
+      ),
     );
   }
 }
