@@ -107,7 +107,18 @@ class PetList extends StatelessWidget {
       ),
       itemCount: pets.length,
       itemBuilder: (context, index) {
-        return Image.network(pets[index].imageLink);
+        return Card(
+            elevation: 4, // Controls the shadow intensity
+            shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(16.0), // Adjust the corner radius here
+            ),
+            child: Column(
+              children: [
+                Image.network(pets[index].imageLink),
+                Text(pets[index].name)
+              ],
+            ));
       },
     );
   }
