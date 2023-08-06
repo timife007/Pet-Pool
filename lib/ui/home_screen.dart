@@ -115,7 +115,10 @@ class PetList extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Image.network(pets[index].imageLink),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.network(pets[index].imageLink),
+                ),
                 Text(pets[index].name)
               ],
             ));
