@@ -34,7 +34,8 @@ class _PetListScreenState extends State<PetListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.home_filled),
+        leading: IconButton(
+            onPressed: () {}, icon: const Icon(Icons.person_2_rounded)),
         actions: const [Icon(Icons.notifications)],
         backgroundColor: Colors.green,
         title: const Text(

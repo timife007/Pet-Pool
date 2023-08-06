@@ -14,7 +14,7 @@ class _HomeState extends State<Home> {
   static const List<Widget> _widgetOptions = <Widget>[
     PetListScreen(),
     Center(child: Text('Favorites')),
-    Center(child: Text('Screen 3'))
+    Center(child: Text('Profile'))
   ];
 
   void onItemTapped(int index) {
