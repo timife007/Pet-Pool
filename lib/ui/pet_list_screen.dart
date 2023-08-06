@@ -5,14 +5,14 @@ import 'package:http/http.dart' as http;
 import 'package:pet_pool/logger.dart';
 import 'package:pet_pool/ui/detail_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class PetListScreen extends StatefulWidget {
+  const PetListScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<PetListScreen> createState() => _PetListScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _PetListScreenState extends State<PetListScreen> {
   late Future<List<PetItem>> futureData;
   late String searchItem;
 

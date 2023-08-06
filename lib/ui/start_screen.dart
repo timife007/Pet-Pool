@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pet_pool/ui/home_screen.dart';
+import 'package:pet_pool/ui/home.dart';
+import 'package:pet_pool/ui/pet_list_screen.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -30,7 +31,7 @@ class StartScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const HomeScreen()));
+                                builder: (context) => const Home()));
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor:
