@@ -14,7 +14,8 @@ class DetailScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
+          Expanded(
+              child: Padding(
             padding: const EdgeInsets.only(top: 25.0, left: 10, right: 10),
             child: Stack(
               children: [
@@ -48,15 +49,16 @@ class DetailScreen extends StatelessWidget {
                 )
               ],
             ),
-          ),
-          Padding(
+          )),
+          Expanded(
+              child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Text(
               petItem.name,
               style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               textAlign: TextAlign.start,
             ),
-          )
+          ))
         ],
       ),
     );
