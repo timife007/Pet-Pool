@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_pool/data/pet_item.dart';
 import 'package:pet_pool/data/pets_api.dart';
 import 'package:http/http.dart' as http;
+import 'package:pet_pool/logger.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,18 +12,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController _searchController = TextEditingController();
   late Future<List<PetItem>> futureData;
+  late String searchItem;
 
   @override
   void initState() {
     super.initState();
-    futureData = fetchPets(http.Client(), '');
+    searchItem = "";
+    futureData = fetchPets(http.Client(), searchItem);
   }
 
-  void _performSearch() {
+  Future<void> _performSearch({String value = ''}) async {
     setState(() {
-      futureData = fetchPets(http.Client(), _searchController.text);
+      futureData = fetchPets(http.Client(), searchItem);
+      logger.d(searchItem);
     });
   }
 
@@ -30,8 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
+        leading: const Icon(Icons.home_filled),
+        actions: const [Icon(Icons.notifications)],
+        backgroundColor: Colors.green,
         title: const Text(
           'Pet Pool',
           style: TextStyle(fontSize: 20),
@@ -42,14 +46,23 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextField(
-              controller: _searchController,
               decoration: const InputDecoration(
                   border: OutlineInputBorder(), label: Text('Search for pets')),
               textAlign: TextAlign.start,
-              onChanged: (value) => _performSearch(),
+              onChanged: (value) => {
+                // setState(() {
+                searchItem = value,
+                // }),
+                if (searchItem.isEmpty)
+                  {_performSearch()}
+                else
+                  {_performSearch()}
+              },
             ),
           ),
-          Expanded(child: buildFutureBuilder())
+          Expanded(
+              child: RefreshIndicator(
+                  onRefresh: _performSearch, child: buildFutureBuilder()))
         ],
       ),
     );
