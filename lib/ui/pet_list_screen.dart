@@ -13,19 +13,20 @@ class PetListScreen extends StatefulWidget {
 }
 
 class _PetListScreenState extends State<PetListScreen> {
-  late Future<List<PetItem>> futureData;
+  late Future futureData;
   late String searchItem;
+  final model = Model();
 
   @override
   void initState() {
     super.initState();
     searchItem = "";
-    futureData = fetchPets(http.Client(), searchItem);
+    futureData = model.fetchPets(http.Client(), searchItem);
   }
 
   Future<void> _performSearch({String value = ''}) async {
     setState(() {
-      futureData = fetchPets(http.Client(), searchItem);
+      futureData = model.fetchPets(http.Client(), searchItem);
       logger.d(searchItem);
     });
   }
@@ -72,17 +73,21 @@ class _PetListScreenState extends State<PetListScreen> {
           ),
           Expanded(
               child: RefreshIndicator(
-                  onRefresh: _performSearch, child: buildFutureBuilder()))
+                  onRefresh: _performSearch, child: buildStreamBuilder()))
         ],
       ),
     );
   }
 
-  FutureBuilder<List<PetItem>?> buildFutureBuilder() {
-    return FutureBuilder(
-        future: futureData,
+  StreamBuilder buildStreamBuilder() {
+    return StreamBuilder(
+        stream: model.modelState,
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
             return const Center(
               child: Text('An error has occurred!'),
             );
@@ -93,11 +98,8 @@ class _PetListScreenState extends State<PetListScreen> {
               );
             }
             return PetList(pets: snapshot.data!);
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
           }
+          return Text(snapshot.error.toString());
         });
   }
 }

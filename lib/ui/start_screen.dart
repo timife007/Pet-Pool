@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pet_pool/ui/home.dart';
-import 'package:pet_pool/ui/pet_list_screen.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
