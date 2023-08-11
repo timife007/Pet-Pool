@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -26,10 +25,9 @@ final petsProvider = StreamProvider<List<PetItem>>((ref) async* {
     final response = await http.Client().get(
         Uri.parse('https://api.api-ninjas.com/v1/dogs?name=$searchItem'),
         headers: {'X-Api-Key': 'CYFtX0dCmZVgtXJnItZ91A==Sn02Qls8KW0Lpkxi'});
-    // logger.d(response.body);
     final parsedData = model.parsePets(response.body); // Parse data here
     yield parsedData;
   } catch (e) {
-    // _streamController.addError('Error fetchind data');
+    yield [];
   }
 });
