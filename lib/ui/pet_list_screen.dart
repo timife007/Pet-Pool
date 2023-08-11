@@ -11,12 +11,12 @@ class PetListScreen extends ConsumerStatefulWidget {
 }
 
 class PetListScreenState extends ConsumerState<PetListScreen> {
-  late Future futureData;
+  // late Future futureData;
 
   @override
   void initState() {
     super.initState();
-    ref.watch(petsProvider);
+    // ref.watch(petsProvider);
   }
 
   @override
@@ -53,12 +53,19 @@ class PetListScreenState extends ConsumerState<PetListScreen> {
                   {ref.read(searchProvider.notifier).state = value},
             ),
           ),
-          pets.when(
-              data: (messages) {
-                return PetList(pets: messages);
-              },
-              error: ((error, stackTrace) => Text(error.toString())),
-              loading: () => const CircularProgressIndicator.adaptive())
+          Container(
+            child: pets.when(
+                data: (messages) {
+                  if (messages.isEmpty) {
+                    return const Center(child: Text('Error fetching data'));
+                  }
+                  return Expanded(child: PetList(pets: messages));
+                },
+                error: ((error, stackTrace) =>
+                    const Expanded(child: Text('Error fetching data'))),
+                loading: () => const CircularProgressIndicator.adaptive()),
+          ),
+
           // Expanded(
           //     child: RefreshIndicator(
           //         onRefresh: ,

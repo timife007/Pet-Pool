@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_pool/ui/home.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const ProviderScope(
+      child: MaterialApp(
+    home: MainApp(),
+  )));
 }
 
 class MainApp extends StatelessWidget {
@@ -11,8 +14,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: ProviderScope(child: Home()),
-    );
+    return const Home();
   }
 }
