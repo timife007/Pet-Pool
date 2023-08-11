@@ -53,23 +53,18 @@ class PetListScreenState extends ConsumerState<PetListScreen> {
                   {ref.read(searchProvider.notifier).state = value},
             ),
           ),
-          Container(
-            child: pets.when(
-                data: (messages) {
-                  if (messages.isEmpty) {
-                    return const Center(child: Text('Error fetching data'));
-                  }
-                  return Expanded(child: PetList(pets: messages));
-                },
-                error: ((error, stackTrace) =>
-                    const Expanded(child: Text('Error fetching data'))),
-                loading: () => const CircularProgressIndicator.adaptive()),
-          ),
-
-          // Expanded(
-          //     child: RefreshIndicator(
-          //         onRefresh: ,
-          //         child: buildStreamBuilder()))
+          pets.when(
+              data: (messages) {
+                if (messages.isEmpty) {
+                  return const Expanded(
+                      child: Center(child: Text('Error fetching data')));
+                }
+                return Expanded(child: PetList(pets: messages));
+              },
+              error: ((error, stackTrace) =>
+                  const Expanded(child: Text('Error fetching data'))),
+              loading: () => const Expanded(
+                  child: Center(child: CircularProgressIndicator.adaptive()))),
         ],
       ),
     );
