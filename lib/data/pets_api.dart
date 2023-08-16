@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:pet_pool/data/pet_item.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+part 'pets_api.g.dart';
 
 class Model {
   List<PetItem> parsePets(String responseBody) {
     final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-    // logger.d(responseBody);
     var petlist =
         parsed.map<PetItem>((json) => PetItem.fromJson(json)).toList();
     return petlist;
@@ -17,7 +18,8 @@ class Model {
 final searchProvider = StateProvider<String>((ref) => "");
 
 // Stream of data provider
-final petsProvider = StreamProvider<List<PetItem>>((ref) async* {
+@riverpod
+Stream<List<PetItem>> pets(PetsRef ref) async* {
   final searchItem = ref.watch(searchProvider);
   final model = Model();
 
@@ -30,4 +32,4 @@ final petsProvider = StreamProvider<List<PetItem>>((ref) async* {
   } catch (e) {
     yield [];
   }
-});
+}

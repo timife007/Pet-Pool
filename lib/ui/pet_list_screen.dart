@@ -11,12 +11,10 @@ class PetListScreen extends ConsumerStatefulWidget {
 }
 
 class PetListScreenState extends ConsumerState<PetListScreen> {
-  // late Future futureData;
 
   @override
   void initState() {
     super.initState();
-    // ref.watch(petsProvider);
   }
 
   @override
